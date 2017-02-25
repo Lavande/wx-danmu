@@ -1,5 +1,5 @@
 # wx-danmu
-======
+
 将微信公众号后台接收的消息实时变成弹幕显示在网页上。
 
 后端基于flask，和前端用socketio通信，前端直接用了[别人的代码](https://github.com/jamesliu96/Damoo/)
