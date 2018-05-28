@@ -45,7 +45,7 @@
 </body>
 
 <script type="text/javascript" src="{{ url_for('static', filename = 'damoo.min.js') }}"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js"></script>
 <script type="text/javascript">
 <!--
 var scrn = window.document.getElementById('dm-screen');
@@ -57,10 +57,10 @@ var damoo = Damoo('dm-screen', 'dm-canvas', 12, "Arial");
 damoo.start();
 
 
-namespace = '/test';
+namespace = '/channel';
 // Connect to the Socket.IO server.
 // The connection URL has the following format:
-//     http[s]://<domain>:<port>[/<namespace>]
+// http[s]://<domain>:<port>[/<namespace>]
 var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
 // Event handler for new connections.
 // The callback function is invoked when a connection with the
@@ -71,11 +71,16 @@ socket.emit('my_event', {data: 'I\'m connected!'});
 
 // Emit 5 lines of damoo with the same content
 socket.on('my_response', function(msg) {
-damoo.emit(msg.data);
-damoo.emit({ text: msg.data, color: "#" + Math.random().toString(16).substring(2).substring(0, 6) });
-damoo.emit(msg.data);
-damoo.emit(msg.data);
-damoo.emit(msg.data);
+	damoo.emit(msg.data);
+	if (Math.random() < 0.7) {
+		damoo.emit({ text: msg.data, color: "#" + Math.random().toString(16).substring(2).substring(0, 6) });
+	}
+	if (Math.random() < 0.5) {
+		damoo.emit({ text: msg.data, color: "#" + Math.random().toString(16).substring(2).substring(0, 6), shadow: true });
+	}
+	if (Math.random() < 0.2) {
+		damoo.emit({ text: msg.data, color: "#" + Math.random().toString(16).substring(2).substring(0, 6), fixed: true });
+	}
 });
 
 
